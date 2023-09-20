@@ -42,7 +42,7 @@ To set up the React ImageSlider project, follow these steps:
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/react-imageslider.git
+   git clone https://github.com/Ike-chukwu/hng-task-three.git
 
 Navigate to the project directory:
 cd react-imageslider

@@ -45,4 +45,9 @@
         padding: 2rem;
 
     }
+
+    .sign-in-form .submit-btn {
+        width: 100%;
+        padding: 1.5rem;
+    }
 }

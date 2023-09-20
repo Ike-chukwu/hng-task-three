@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Home.scss";
 import lead from "../../../src/Lead-image.png";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Loader from "../Loader/Loader";
 import Error from "../Error/Error";
+import { AuthContext } from "../../context";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [data, setData] = useState();
@@ -11,8 +13,11 @@ const Home = () => {
   const [error, setError] = useState();
   const [inputValue, setInputValue] = useState("");
   const [text, setText] = useState("");
-  // const ref = useRef();
+  const navigate = useNavigate();
+  const {  user, logOut, } =
+    useContext(AuthContext);
 
+  //function that fetchs pictures
   const fetchPictures = async () => {
     try {
       const data = await fetch(
@@ -23,7 +28,6 @@ const Home = () => {
       }
       const result = await data.json();
       const pictures = result.hits;
-      console.log(pictures);
       setData(pictures);
       setLoading(false);
     } catch (error) {
@@ -33,10 +37,12 @@ const Home = () => {
     }
   };
 
+  //function that handles input change
   const inputChangeHandler = (e) => {
     setInputValue(e.target.value);
   };
 
+  //function that submits any value a user has put into the input field
   const submitSearch = async (e) => {
     e.preventDefault();
     setText(inputValue);
@@ -47,6 +53,7 @@ const Home = () => {
     }
   };
 
+  //function that is attached to dragend event listerner
   const handleDragDrop = (results) => {
     const { source, destination, type } = results;
     //when destination is not defined
@@ -64,76 +71,125 @@ const Home = () => {
     const destinationIndex = destination.index;
     const [removedPicture] = reorderedPictures.splice(sourceIndex, 1);
     reorderedPictures.splice(destinationIndex, 0, removedPicture);
-    console.log(results);
-    console.log(reorderedPictures);
     return setData(reorderedPictures);
+  };
+
+  //function that navigates the user to sign in route
+
+  const navigateToSignInRoute = () => {
+    navigate("/signin");
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   useEffect(() => {
     fetchPictures();
   }, [text]);
 
-  if (loading)
+  if (loading) return <Loader />;
+  if (error) return <Error />;
+  if (user)
     return (
-      <Loader/>
-    );
-  if (error)
-    return (
-    <Error/>
-    );
+      <section className="home-section">
+        <DragDropContext onDragEnd={handleDragDrop}>
+          <div className="search-input-container">
+            <input
+              className="input-search"
+              type="text"
+              onChange={inputChangeHandler}
+            />
+            <button className="search-btn" onClick={(e) => submitSearch(e)}>
+              search
+            </button>
+          </div>
 
+          <Droppable droppableId="ROOT" type="group">
+            {(provided) => {
+              return (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className="picture-grid"
+                >
+                  {data.length < 1 ? (
+                    <div className="no-results">
+                      <p>No results found!</p>
+                      <p>Refresh the page.</p>
+                    </div>
+                  ) : (
+                    data.map((pic, index) => (
+                      <Draggable
+                        draggableId={pic.id.toString()}
+                        key={pic.id}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <div
+                            className="picture-card"
+                            {...provided.dragHandleProps}
+                            {...provided.draggableProps}
+                            ref={provided.innerRef}
+                          >
+                            <img src={pic.largeImageURL} alt="" />
+                            <div className="text">
+                              <span className="pic-tag-heading">tag:</span>
+                              <span className="pic-tag">{pic.tags}</span>
+                            </div>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))
+                  )}
+                  {provided.placeholder}
+                </div>
+              );
+            }}
+          </Droppable>
+        </DragDropContext>
+        <div className="sign-in-prompt" onClick={handleLogout}>
+          Sign out
+        </div>
+      </section>
+    );
   return (
     <section className="home-section">
-      <DragDropContext onDragEnd={handleDragDrop}>
-        <div className="search-input-container">
-          <input type="text" onChange={inputChangeHandler} />
-          <button className="search-btn" onClick={(e) => submitSearch(e)}>
-            search
-          </button>
-        </div>
-
-        <Droppable droppableId="ROOT" type="group">
-          {(provided) => {
-            return (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className="picture-grid"
-              >
-                {data.length < 1 ? (
-                  <div className="no-results">
-                    <p>No results found!</p>
-                  </div>
-                ) : (
-                  data.map((pic, index) => (
-                    <Draggable
-                      draggableId={pic.id.toString()}
-                      key={pic.id}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <div
-                          className="picture-card"
-                          {...provided.dragHandleProps}
-                          {...provided.draggableProps}
-                          ref={provided.innerRef}
-                        >
-                          <img src={pic.largeImageURL} alt="" />
-                          <div className="text">
-                            <span className="pic-tag-heading">tag:</span>
-                            <span className="pic-tag">{pic.tags}</span>
-                          </div>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))
-                )}
-                {provided.placeholder}
+      <div className="search-input-container">
+        <input
+          className="input-search"
+          type="text"
+          onChange={inputChangeHandler}
+        />
+        <button className="search-btn" onClick={(e) => submitSearch(e)}>
+          search
+        </button>
+      </div>
+      <div className="picture-grid">
+        {data.length < 1 ? (
+          <div className="no-results">
+            <p>No results found!</p>
+            <p>Refresh the page.</p>
+          </div>
+        ) : (
+          data.map((pic, index) => (
+            <div className="picture-card">
+              <img src={pic.largeImageURL} alt="" />
+              <div className="text">
+                <span className="pic-tag-heading">tag:</span>
+                <span className="pic-tag">{pic.tags}</span>
               </div>
-            );
-          }}
-        </Droppable>
-      </DragDropContext>
+            </div>
+          ))
+        )}
+      </div>
+      <div className="sign-in-prompt" onClick={navigateToSignInRoute}>
+        Sign in to enable drag and drop
+      </div>
     </section>
   );
 };

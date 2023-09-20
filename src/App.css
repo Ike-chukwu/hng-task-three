@@ -20,3 +20,26 @@ section{
   padding-block: 10rem;
 }
 
+
+
+@media (max-width:1460px) {
+  section{
+    width: 1000px;
+  }
+}
+
+
+@media (max-width:1050px) {
+  section{
+    width: 800px;
+  }
+}
+
+
+@media (max-width:860px) {
+  section{
+    width: 100%;
+    padding-inline: 3rem;
+  }
+}
+

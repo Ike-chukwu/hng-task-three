@@ -1,0 +1,29 @@
+.input-parent {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.input-parent .label {
+    font-size: 1.8rem;
+}
+
+.input-parent .validation-input {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 1rem;
+    margin-bottom: .3rem;
+}
+
+.input-parent .validation-input:invalid[focused="true"] {
+    border: .2rem solid red;
+}
+
+.error-message {
+    font-size: 1.3rem;
+    color: red;
+    display: none;
+}
+
+.input-parent .validation-input:invalid[focused="true"]~.error-message {
+    display: block;
+}

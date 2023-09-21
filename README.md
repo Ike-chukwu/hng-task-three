@@ -45,7 +45,7 @@ To set up the React ImageSlider project, follow these steps:
    git clone https://github.com/Ike-chukwu/hng-task-three.git
 
 Navigate to the project directory:
-cd react-imageslider
+cd task-3
 
 
 Install the required dependencies:

@@ -14,8 +14,7 @@ const Home = () => {
   const [inputValue, setInputValue] = useState("");
   const [text, setText] = useState("");
   const navigate = useNavigate();
-  const {  user, logOut, } =
-    useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
 
   //function that fetchs pictures
   const fetchPictures = async () => {
@@ -74,12 +73,6 @@ const Home = () => {
     return setData(reorderedPictures);
   };
 
-  //function that navigates the user to sign in route
-
-  const navigateToSignInRoute = () => {
-    navigate("/signin");
-  };
-
   const handleLogout = async () => {
     try {
       await logOut();
@@ -94,101 +87,65 @@ const Home = () => {
 
   if (loading) return <Loader />;
   if (error) return <Error />;
-  if (user)
-    return (
-      <section className="home-section">
-        <DragDropContext onDragEnd={handleDragDrop}>
-          <div className="search-input-container">
-            <input
-              className="input-search"
-              type="text"
-              onChange={inputChangeHandler}
-            />
-            <button className="search-btn" onClick={(e) => submitSearch(e)}>
-              search
-            </button>
-          </div>
-
-          <Droppable droppableId="ROOT" type="group">
-            {(provided) => {
-              return (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  className="picture-grid"
-                >
-                  {data.length < 1 ? (
-                    <div className="no-results">
-                      <p>No results found!</p>
-                      <p>Refresh the page.</p>
-                    </div>
-                  ) : (
-                    data.map((pic, index) => (
-                      <Draggable
-                        draggableId={pic.id.toString()}
-                        key={pic.id}
-                        index={index}
-                      >
-                        {(provided) => (
-                          <div
-                            className="picture-card"
-                            {...provided.dragHandleProps}
-                            {...provided.draggableProps}
-                            ref={provided.innerRef}
-                          >
-                            <img src={pic.largeImageURL} alt="" />
-                            <div className="text">
-                              <span className="pic-tag-heading">tag:</span>
-                              <span className="pic-tag">{pic.tags}</span>
-                            </div>
-                          </div>
-                        )}
-                      </Draggable>
-                    ))
-                  )}
-                  {provided.placeholder}
-                </div>
-              );
-            }}
-          </Droppable>
-        </DragDropContext>
-        <div className="sign-in-prompt" onClick={handleLogout}>
-          Sign out
-        </div>
-      </section>
-    );
   return (
     <section className="home-section">
-      <div className="search-input-container">
-        <input
-          className="input-search"
-          type="text"
-          onChange={inputChangeHandler}
-        />
-        <button className="search-btn" onClick={(e) => submitSearch(e)}>
-          search
-        </button>
-      </div>
-      <div className="picture-grid">
-        {data.length < 1 ? (
-          <div className="no-results">
-            <p>No results found!</p>
-            <p>Refresh the page.</p>
-          </div>
-        ) : (
-          data.map((pic, index) => (
-            <div className="picture-card">
-              <img src={pic.largeImageURL} alt="" />
-              <div className="text">
-                <span className="pic-tag-heading">tag:</span>
-                <span className="pic-tag">{pic.tags}</span>
+      <DragDropContext onDragEnd={handleDragDrop}>
+        <div className="search-input-container">
+          <input
+            className="input-search"
+            type="text"
+            onChange={inputChangeHandler}
+          />
+          <button className="search-btn" onClick={(e) => submitSearch(e)}>
+            search
+          </button>
+        </div>
+
+        <Droppable droppableId="ROOT" type="group">
+          {(provided) => {
+            return (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="picture-grid"
+              >
+                {data.length < 1 ? (
+                  <div className="no-results">
+                    <p>No results found!</p>
+                    <p>Refresh the page.</p>
+                  </div>
+                ) : (
+                  data.map((pic, index) => (
+                    <Draggable
+                      draggableId={pic.id.toString()}
+                      key={pic.id.toString()}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <div
+                          className="picture-card"
+                          {...provided.dragHandleProps}
+                          {...provided.draggableProps}
+                          ref={provided.innerRef}
+                        >
+                          <img src={pic.largeImageURL} alt="" />
+                          <div className="text">
+                            <span className="pic-tag-heading">tag:</span>
+                            <span className="pic-tag">{pic.tags}</span>
+                          </div>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))
+                )}
+                {provided.placeholder}
               </div>
-            </div>
-          ))
-        )}
-      </div>
-      <div className="sign-in-prompt" onClick={navigateToSignInRoute}>
-        Sign in to enable drag and drop
+            );
+          }}
+        </Droppable>
+      </DragDropContext>
+      <div className="sign-in-prompt" onClick={handleLogout}>
+        Sign out
       </div>
     </section>
   );

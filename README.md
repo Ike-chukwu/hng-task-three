@@ -17,15 +17,15 @@
 
 ## Introduction
 
-The React ImageSlider project is a versatile and user-friendly image slider application built using React. It allows users to view and search for images of their choice and includes a drag-and-drop feature, accessible only to authenticated users, for image uploading and management.
+The React ImageSlider project is a versatile and user-friendly image gallery application built using React. It allows users to view and search for images of their choice and includes a drag-and-drop feature.The image gallery is accessible only to authenticated users.
 
 ## Features
 
-- **Image Viewing:** Users can easily view a collection of images in a slide-show format.
+- **Image Viewing:** Users can easily view a collection of images .
 
-- **Image Search:** The application allows users to search for images by category, making it simple to find specific images.
+- **Image Search:** The application allows users to search for images by tags, making it simple to find specific images.
 
-- **Drag and Drop:** Authenticated users have the ability to upload and manage images through a convenient drag-and-drop interface.
+- **Drag and Drop:** users have the ability to upload and manage images through a convenient drag-and-drop interface.
 
 ## Getting Started
 

@@ -37,7 +37,7 @@ Before you begin, ensure you have met the following requirements:
 
 ### Installation
 
-To set up the React ImageSlider project, follow these steps:
+To set up the React ImageGallery project, follow these steps:
 
 1. Clone this repository to your local machine:
 

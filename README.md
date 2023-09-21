@@ -54,14 +54,14 @@ npm install
 
 Usage
 Viewing Images
-To view images, simply open the application in your web browser and navigate to the homepage. The images will be displayed in a slide-show format, allowing you to browse through them.
+To view images, simply open the application in your web browser and sign in. The images will be displayed in a gallery format, allowing you to browse through them and change order by using drag and drop feature.
 
 Searching for Images
 You can search for images by category using the search feature. Enter your desired category in the search bar and press Enter. The application will display images matching your search query.
 
 Authenticated User Features
-If you want to access the drag-and-drop feature for image management, you must be an authenticated user. Follow these steps:
+If you want to access the gallery, you must be an authenticated user. Follow these steps:
 
-Sign up for an account or log in if you already have one.
+log in with the provided user credentials.
 
-Once authenticated, you will have access to the drag-and-drop interface for uploading and managing images.
+Once authenticated, you will have access to the image gallery.

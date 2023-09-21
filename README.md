@@ -49,7 +49,7 @@ cd task-3
 
 
 Install the required dependencies:
-npm install
+npm install, npm install react-beautiful-dnd, npm install scss
 
 
 Usage
